@@ -89,6 +89,10 @@ def get_imgurls(repo):
         return list(set(fh.readlines()))
 
 
+def newrelic_footer_json():
+    return newrelic.agent.get_browser_timing_footer()[67:-9] or '{}'
+
+
 @gzip_page
 @cache_control(max_age=settings.CACHE_MIDDLEWARE_SECONDS)
 def commonplace(request, repo, **kwargs):
@@ -130,8 +134,7 @@ def commonplace(request, repo, **kwargs):
         'repo': repo,
         'robots': 'googlebot' in ua,
         'site_settings': site_settings,
-        'newrelic_header': newrelic.agent.get_browser_timing_header,
-        'newrelic_footer': newrelic.agent.get_browser_timing_footer,
+        'newrelic_footer': newrelic_footer_json,
     }
 
     if repo == 'fireplace':

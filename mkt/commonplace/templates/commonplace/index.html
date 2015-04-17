@@ -27,9 +27,11 @@
     <link rel="dns-prefetch" href="//www.google-analytics.com">
     <link rel="dns-prefetch" href="//stats.g.doubleclick.net">
 
-    {{ newrelic_header()|safe if repo == 'fireplace' }}
+    {% if repo == 'fireplace' %}
+      <script type="text/javascript" src="{{ media('js/lib/newrelic.js') }}" id='newrelic-footer'></script>
+    {% endif %}
   </head>
-  <body class="home{{ ' overlayed' if repo == 'fireplace' }}" data-languages="{{ settings.AMO_LANGUAGES|json }}" data-settings="{{ site_settings|json }}" data-build-id-js="{{ BUILD_ID_JS }}" data-media="{{ MEDIA_URL }}" data-repo="{{ repo }}" data-waffle-switches="{{ waffle_switches|json }}"{% if geoip_region %} data-region="{{ geoip_region.slug }}"{% endif %}>
+  <body class="home{{ ' overlayed' if repo == 'fireplace' }}" data-languages="{{ settings.AMO_LANGUAGES|json }}" data-settings="{{ site_settings|json }}" data-build-id-js="{{ BUILD_ID_JS }}" data-media="{{ MEDIA_URL }}" data-repo="{{ repo }}" data-waffle-switches="{{ waffle_switches|json }}"{% if geoip_region %} data-region="{{ geoip_region.slug }}"{% endif %} {% if repo == 'fireplace' %}data-newrelic-footer="{{ newrelic_footer() }}"{% endif %}>
 
     {% if not robots -%}
       <noscript><p>Sorry, you need JavaScript to access the Marketplace.</p></noscript>
@@ -62,6 +64,9 @@
     {% endif %}
 
     <script type="text/javascript" src="{{ media(repo + '/js/include.js') }}" defer></script>
-    {{ newrelic_footer()|safe if repo == 'fireplace' }}
+
+    {% if repo == "fireplace" %}
+      <script type="text/javascript" src="{{ media('/js/lib/newrelicfooter.js') }}"></script>
+    {% endif %}
   </body>
 </html>
